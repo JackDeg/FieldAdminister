@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using HarmonyLib;
 using Verse;
 using RimWorld;
 using UnityEngine;
 using Verse.AI;
-using JackDeg_FieldAdminister;
 
 namespace JackDeg_FieldAdminister
 {
@@ -38,7 +35,6 @@ namespace JackDeg_FieldAdminister
                     if (patient.Downed
                         && pawn.CanReach(patient, PathEndMode.InteractionCell, Danger.Deadly))
                     {
-                        bool medicines = true;
                         List<Thing> drugItems = new List<Thing>();
                         List<String> possibleDrugs = new List<String>();
                         possibleDrugs.Add("GoJuice");

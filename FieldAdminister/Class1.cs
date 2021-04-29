@@ -10,7 +10,7 @@ namespace JackDeg_FieldAdminister
         private const float baseTendDuration = 60f;
 
         private Pawn Patient { get { return pawn.CurJob.targetA.Thing as Pawn; } }
-        private Thing Drug { get { return pawn.CurJob.targetB.Thing as Thing; } }
+        private Thing Drug { get { return pawn.CurJob.targetB.Thing; } }
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
