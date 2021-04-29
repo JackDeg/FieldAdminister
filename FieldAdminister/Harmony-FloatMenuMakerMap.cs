@@ -16,6 +16,16 @@ namespace JackDeg_FieldAdminister
     [HarmonyPatch(new Type[] { typeof(Vector3), typeof(Pawn), typeof(List<FloatMenuOption>) })]
     static class FloatMenuMakerMap_Modify_AddHumanlikeOrders
     {
+        public static Action MakeAction(Thing drug, Pawn pawn, Pawn patient)
+        {
+            Action action = delegate
+            {
+                Job job = new Job(FieldAdminister_JobDefOf.AdministerDrugs, patient, drug);
+                job.count = 1;
+                pawn.jobs.TryTakeOrderedJob(job);
+            };
+            return action;
+        }
         [HarmonyPostfix]
         static void AddMenuItems(Vector3 clickPos, Pawn pawn, List<FloatMenuOption> opts)
         {
@@ -28,41 +38,35 @@ namespace JackDeg_FieldAdminister
                     if (patient.Downed
                         && pawn.CanReach(patient, PathEndMode.InteractionCell, Danger.Deadly))
                     {
+                        bool medicines = true;
+                        List<Thing> drugItems = new List<Thing>();
+                        List<String> possibleDrugs = new List<String>();
+                        possibleDrugs.Add("GoJuice");
+                        possibleDrugs.Add("Morphine");
+                        possibleDrugs.Add("Tyrox");
+                        possibleDrugs.Add("ThornWeedNeedle");
+                        possibleDrugs.Add("ThornWeedExtract");
 
-                        Thing gojuiceItem = null;
                         foreach (var i in pawn.inventory.GetDrugs())
                         {
-                            if (i is GoJuice)
+                            if (possibleDrugs.Contains(i.def.defName))
                             {
-                                gojuiceItem = i;
+                                
+                                drugItems.Add(i);
                             }
                         }
 
-                        if (pawn.WorkTypeIsDisabled(WorkTypeDefOf.Doctor) && (gojuiceItem == null || !(gojuiceItem is GoJuice)))
-                        {
-                            opts.Add(new FloatMenuOption("FieldMedic_CannotStabilize".Translate() + " (" + "IncapableOfCapacity".Translate(WorkTypeDefOf.Doctor.gerundLabel) + ")", null, MenuOptionPriority.Default));
-                            return;
-                        }
                         if (pawn.WorkTypeIsDisabled(WorkTypeDefOf.Doctor))
                         {
                             opts.Add(new FloatMenuOption("FieldMedic_CannotStabilize".Translate() + " (" + "IncapableOfCapacity".Translate(WorkTypeDefOf.Doctor.gerundLabel) + ")", null, MenuOptionPriority.Default));
                             return;
                         }
-                        if (gojuiceItem == null || !(gojuiceItem is GoJuice))
+                        string label;
+                        foreach (Thing drug in drugItems)
                         {
-                            //opts.Add(new FloatMenuOption("FieldMedic_CannotStabilize".Translate() + " (" + "FieldMedic_NoMedicBag".Translate() + ")", null, MenuOptionPriority.Default));
-                            return;
+                            label = "FA_Administer".Translate(drug.Label, patient.LabelCap);
+                            opts.Add(FloatMenuUtility.DecoratePrioritizedTask(new FloatMenuOption(label, MakeAction(drug, pawn, patient), MenuOptionPriority.Default, null, patient), pawn, patient, "ReservedBy"));
                         }
-
-                        string label = "FieldMedic_Stabilize".Translate(patient.LabelCap);
-                        Action action = delegate
-                        {
-                            var medicbag = (GoJuice)gojuiceItem;
-                            Job job = new Job(FieldAdminister_JobDefOf.AdministerGoJuice, patient, medicbag);
-                            job.count = 1;
-                            pawn.jobs.TryTakeOrderedJob(job);
-                        };
-                        opts.Add(FloatMenuUtility.DecoratePrioritizedTask(new FloatMenuOption(label, action, MenuOptionPriority.Default, null, patient), pawn, patient, "ReservedBy"));
                     }
                 }
             }
