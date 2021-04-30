@@ -54,13 +54,13 @@ namespace JackDeg_FieldAdminister
 
                         if (pawn.WorkTypeIsDisabled(WorkTypeDefOf.Doctor))
                         {
-                            opts.Add(new FloatMenuOption("FieldMedic_CannotStabilize".Translate() + " (" + "IncapableOfCapacity".Translate(WorkTypeDefOf.Doctor.gerundLabel) + ")", null, MenuOptionPriority.Default));
+                            opts.Add(new FloatMenuOption("FA_DoctorDisabled".Translate(), null, MenuOptionPriority.Default));
                             return;
                         }
                         string label;
                         foreach (Thing drug in drugItems)
                         {
-                            label = "FA_Administer".Translate(drug.Label, patient.LabelCap);
+                            label = "FA_Administer".Translate(drug.LabelNoCount, patient.LabelCap);
                             opts.Add(FloatMenuUtility.DecoratePrioritizedTask(new FloatMenuOption(label, MakeAction(drug, pawn, patient), MenuOptionPriority.Default, null, patient), pawn, patient, "ReservedBy"));
                         }
                     }

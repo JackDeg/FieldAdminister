@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "FieldAdminister": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Users\\jackd\\Desktop\\RWDev\\RimWorld\\RimWorldWin64.exe",
+      "commandLineArgs": "quicktest"
+    }
+  }
+}
