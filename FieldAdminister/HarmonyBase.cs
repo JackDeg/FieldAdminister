@@ -1,10 +1,6 @@
 ﻿using System.Reflection;
 using HarmonyLib;
 using Verse;
-using System;
-using System.Reflection.Emit;
-using System.Linq;
-using System.Collections.Generic;
 
 // Modified from the same named file from Combat Extended, under CC-BY-NC-SA-4.0.
 

@@ -5,12 +5,12 @@ using Verse.AI;
 
 namespace JackDeg_FieldAdminister
 {
-    public class JobDriver_AdministerGoJuice : JobDriver
+    public class JobDriver_AdministerDrugs : JobDriver
     {
         private const float baseTendDuration = 60f;
 
         private Pawn Patient { get { return pawn.CurJob.targetA.Thing as Pawn; } }
-        private GoJuice GoJuice { get { return pawn.CurJob.targetB.Thing as GoJuice; } }
+        private Thing Drug { get { return pawn.CurJob.targetB.Thing; } }
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
@@ -18,21 +18,23 @@ namespace JackDeg_FieldAdminister
         }
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            this.FailOn(() => Patient == null || GoJuice == null);
+            this.FailOn(() => Patient == null || Drug == null);
             this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
             this.FailOnDestroyedNullOrForbidden(TargetIndex.B);
             this.FailOnNotDowned(TargetIndex.A);
+
+            bool deleted = false;
+
             this.AddEndCondition(delegate
             {
-                if (Patient.health.Downed) return JobCondition.Ongoing;
-                GoJuice.Destroy();
+                if (!deleted) return JobCondition.Ongoing;
                 return JobCondition.Incompletable;
             });
 
-            // Pick up GoJuice and haul to patient
+            // Pick up drug and haul to patient
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.InteractionCell);
 
-            // Stabilize patient
+            // drug patient
             Log.Message("starting toil");
             int duration = (int)(1f / this.pawn.GetStatValue(StatDefOf.MedicalTendSpeed, true) * baseTendDuration);
             Toil waitToil = Toils_General.Wait(duration).WithProgressBarToilDelay(TargetIndex.A).PlaySustainerOrSound(SoundDefOf.Interact_Tend);
@@ -40,7 +42,8 @@ namespace JackDeg_FieldAdminister
             Toil administerToil = new Toil();
             administerToil.initAction = delegate
             {
-                GoJuice.Ingested(Patient, 0);
+                Drug.Ingested(Patient, 0);
+                deleted = true;
             };
             administerToil.defaultCompleteMode = ToilCompleteMode.Instant;
             yield return administerToil;
