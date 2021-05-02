@@ -37,6 +37,7 @@ namespace JackDeg_FieldAdminister
                     {
                         List<Thing> drugItems = new List<Thing>();
                         List<String> possibleDrugs = new List<String>();
+                        //vanilla
                         possibleDrugs.Add("GoJuice");
 
                         //medicines+
@@ -48,6 +49,14 @@ namespace JackDeg_FieldAdminister
                         //Remedies
                         possibleDrugs.Add("FF_Painkiller");
                         possibleDrugs.Add("FF_Fibrodust");
+
+                        //Medical Supplements
+                        possibleDrugs.Add("MSAntitox");
+                        possibleDrugs.Add("MSRimCodamol");
+                        possibleDrugs.Add("MSMorphine");
+                        possibleDrugs.Add("MSRimBurnEaze");
+                        possibleDrugs.Add("MSRimcetamol");
+                        possibleDrugs.Add("MSRimedicrem");
 
                         foreach (var i in pawn.inventory.GetDrugs())
                         {
