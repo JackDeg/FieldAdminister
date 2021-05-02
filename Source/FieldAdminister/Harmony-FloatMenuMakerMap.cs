@@ -36,27 +36,7 @@ namespace JackDeg_FieldAdminister
                         && pawn.CanReach(patient, PathEndMode.InteractionCell, Danger.Deadly))
                     {
                         List<Thing> drugItems = new List<Thing>();
-                        List<String> possibleDrugs = new List<String>();
-                        //vanilla
-                        possibleDrugs.Add("GoJuice");
-
-                        //medicines+
-                        possibleDrugs.Add("Morphine");
-                        possibleDrugs.Add("Tyrox");
-                        possibleDrugs.Add("ThornWeedNeedle");
-                        possibleDrugs.Add("ThornWeedExtract");
-
-                        //Remedies
-                        possibleDrugs.Add("FF_Painkiller");
-                        possibleDrugs.Add("FF_Fibrodust");
-
-                        //Medical Supplements
-                        possibleDrugs.Add("MSAntitox");
-                        possibleDrugs.Add("MSRimCodamol");
-                        possibleDrugs.Add("MSMorphine");
-                        possibleDrugs.Add("MSRimBurnEaze");
-                        possibleDrugs.Add("MSRimcetamol");
-                        possibleDrugs.Add("MSRimedicrem");
+                        List<String> possibleDrugs = Drugs.druglist;
 
                         foreach (var i in pawn.inventory.GetDrugs())
                         {
