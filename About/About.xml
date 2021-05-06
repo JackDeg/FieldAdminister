@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-	<name>Field Administer</name>
+	<name>Field Administer Dev</name>
 	<author>JackDeg</author>
 	<supportedVersions>
 		<li>1.2</li>
 	</supportedVersions>
-	<packageId>JackDeg.FieldAdminister</packageId>
+	<packageId>JackDeg.FieldAdministerDev</packageId>
 	<modDependenciesByVersion>
 		<v1.2>
 			<li>
