@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>C:\Users\jackd\Desktop\RWDev\RimWorld\Mods\FieldAdministerDev\Assemblies\</OutputPath>
+    <OutputPath>C:\Users\jackd\Desktop\RWDev\RimWorld\Mods\FieldAdminister\Assemblies\</OutputPath>
     <DebugType>none</DebugType>
     <DebugSymbols>false</DebugSymbols>
     <WarningLevel>3</WarningLevel>

@@ -5,7 +5,6 @@ using Verse;
 using RimWorld;
 using UnityEngine;
 using Verse.AI;
-using System.Linq;
 
 namespace JackDeg_FieldAdminister
 {
@@ -36,24 +35,18 @@ namespace JackDeg_FieldAdminister
                     if (patient.Downed
                         && pawn.CanReach(patient, PathEndMode.InteractionCell, Danger.Deadly))
                     {
-                        IEnumerable<Thing> drugItems = new List<Thing>();
-                        if (FASettings.alldrugs)
-                        {
-                            drugItems = pawn.inventory.GetDrugs();
-                        } 
-                        else
-                        {
-                            List<String> possibleDrugs = Drugs.druglist;
+                        List<Thing> drugItems = new List<Thing>();
+                        List<String> possibleDrugs = Drugs.druglist;
 
-                            foreach (var i in pawn.inventory.GetDrugs())
+                        foreach (var i in pawn.inventory.GetDrugs())
+                        {
+                            if (possibleDrugs.Contains(i.def.defName))
                             {
-                                if (possibleDrugs.Contains(i.def.defName))
-                                {
-                                    drugItems = drugItems.Concat(i);
-                                }
+                                
+                                drugItems.Add(i);
                             }
                         }
-                        
+
                         if (pawn.WorkTypeIsDisabled(WorkTypeDefOf.Doctor))
                         {
                             opts.Add(new FloatMenuOption("FA_DoctorDisabled".Translate(), null, MenuOptionPriority.Default));
